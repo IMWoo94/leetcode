@@ -3,20 +3,21 @@ class Solution {
         // 주어진 배열 안에서 두개의 값을 이용해서 target 의 값을 만들어내는 인덱스를 리턴
         int[] answer = new int[2];
         int size = nums.length;
+        Map<Integer, Integer> map = new HashMap<>();
         
-        for(int i = 0; i < size - 1; i++){
-            for(int j = i + 1; j < size; j++){
-                int a = nums[i];
-                int b = nums[j];
-                int sum = a + b;
-                if(sum == target){
-                    answer[0] = i;
-                    answer[1] = j;
-                    break;
-                }
-            }
+        for(int i = 0; i < size; i++){
+            map.put(nums[i], i);
         }
 
+        for(int i = 0; i < size; i++){
+            int result = target - nums[i];
+            if(map.containsKey(result) && map.get(result) != i){
+                answer[0] = i;
+                answer[1] = map.get(result);
+                break;
+            }
+        }
+        
         return answer;
     }
 }
