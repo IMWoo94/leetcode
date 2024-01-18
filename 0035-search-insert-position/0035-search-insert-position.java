@@ -15,18 +15,26 @@ class Solution {
 //         return answer;
         
         // 정렬된 배열이라면 이진탐색을 이용하여 시간복잡도를 줄일 수 있다. O(log n)
-        int start = 0;
-        int end = nums.length - 1;
-        while(start <= end){
-            int mid = (start + end)/2;
-            if(nums[mid] == target){
-                return mid;
-            }else if(nums[mid] < target){
-                start = mid + 1;
-            }else{
-                end = mid - 1;
-            }
+        // int start = 0;
+        // int end = nums.length - 1;
+        // while(start <= end){
+        //     int mid = (start + end)/2;
+        //     if(nums[mid] == target){
+        //         return mid;
+        //     }else if(nums[mid] < target){
+        //         start = mid + 1;
+        //     }else{
+        //         end = mid - 1;
+        //     }
+        // }
+        // return start;
+        
+        // Arrays 에서 binarySearch 를 메소드로 제공한다.
+        int answer = Arrays.binarySearch(nums, target);
+        if(answer < 0){
+            answer = Math.abs(answer + 1);
         }
-        return start;
+        
+        return answer;
     }
 }
