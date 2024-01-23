@@ -29,7 +29,7 @@ class Solution {
             return true;
         }
         // 한쪽만 null 이면 False
-        if (node1 == null || node2 == null) {
+        else if (node1 == null || node2 == null) {
             return false;
         }
         // 왼쪽  오른쪽 값 비교 그리고 다음 노드들의 대칭 비교 결과
