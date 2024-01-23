@@ -15,7 +15,7 @@ class Solution:
         if not left and not right:
             return True
         # 한쪽만 null
-        if not left or not right:
+        elif not left or not right:
             return False
         
         return left.val == right.val and self.isMirror(left.left, right.right) and self.isMirror(left.right, right.left)
