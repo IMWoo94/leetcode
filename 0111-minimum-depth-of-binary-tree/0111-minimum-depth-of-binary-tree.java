@@ -18,19 +18,38 @@ import java.util.*;
 
 class Solution {
     // DFS
-    public int minDepth(TreeNode root) {
-        // root 가 null 이면 return 0
-        if (root == null){
-            return 0;   
-        }else if(root.left == null && root.right == null){
+    // public int minDepth(TreeNode root) {
+    //     // root 가 null 이면 return 0
+    //     if (root == null){
+    //         return 0;   
+    //     }else if(root.left == null && root.right == null){
+    //         return 1;
+    //     }else if(root.left == null){
+    //         return 1 + minDepth(root.right);
+    //     }else if(root.right == null){
+    //         return 1 + minDepth(root.left);
+    //     }else{
+    //         return 1 + Math.min(minDepth(root.left), minDepth(root.right));
+    //     }
+    // }
+    // DFS
+        public int minDepth(TreeNode root) {
+
+        if(root == null)  return 0;
+
+        int leftDepth = minDepth(root.left);
+        int rightDepth = minDepth(root.right);
+
+        if(root.left == null && root.right == null)
             return 1;
-        }else if(root.left == null){
-            return 1 + minDepth(root.right);
-        }else if(root.right == null){
-            return 1 + minDepth(root.left);
-        }else{
-            return 1 + Math.min(minDepth(root.left), minDepth(root.right));
-        }
+
+        if(root.left == null)
+            return 1 + rightDepth;
+
+        if(root.right == null)
+            return 1 + leftDepth;
+    
+        return Math.min(leftDepth, rightDepth) + 1;
     }
     
     // BFS
