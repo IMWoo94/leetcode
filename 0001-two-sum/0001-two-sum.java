@@ -1,23 +1,18 @@
 class Solution {
     public int[] twoSum(int[] nums, int target) {
-        // 주어진 배열 안에서 두개의 값을 이용해서 target 의 값을 만들어내는 인덱스를 리턴
-        int[] answer = new int[2];
-        int size = nums.length;
-        Map<Integer, Integer> map = new HashMap<>();
-        
-        for(int i = 0; i < size; i++){
-            map.put(nums[i], i);
-        }
+        // 답은 2개의 숫자를 합하여 리턴하는 것으로 배열의 크기는 2로 고정
+		int[] answer = new int[2];
 
-        for(int i = 0; i < size; i++){
-            int result = target - nums[i];
-            if(map.containsKey(result) && map.get(result) != i){
-                answer[0] = i;
-                answer[1] = map.get(result);
-                break;
-            }
-        }
-        
-        return answer;
+		int len = nums.length;
+		// 하나씩 하나씩 모든 경우의 수를 비교해보면서 target 과 일치하는 값 찾기
+		for (int a = 0; a < len; a++) {
+			for (int b = a + 1; b < len; b++) {
+				if (nums[a] + nums[b] == target) {
+					answer[0] = a;
+					answer[1] = b;
+				}
+			}
+		}
+		return answer;
     }
 }
