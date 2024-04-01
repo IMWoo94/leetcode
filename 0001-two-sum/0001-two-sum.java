@@ -1,18 +1,21 @@
 class Solution {
     public int[] twoSum(int[] nums, int target) {
-        // 답은 2개의 숫자를 합하여 리턴하는 것으로 배열의 크기는 2로 고정
-		int[] answer = new int[2];
+		int[] answer;
+		// key = number, value = index
+		Map<Integer, Integer> map = new HashMap<>();
 
-		int len = nums.length;
-		// 하나씩 하나씩 모든 경우의 수를 비교해보면서 target 과 일치하는 값 찾기
-		for (int a = 0; a < len; a++) {
-			for (int b = a + 1; b < len; b++) {
-				if (nums[a] + nums[b] == target) {
-					answer[0] = a;
-					answer[1] = b;
-				}
+		for (int i = 0; i < nums.length; i++) {
+			map.put(nums[i], i);
+		}
+
+		// target 에서 현재 수를 뺀 값이 key 로 존재한다면 2 수의 합으로 target 성립
+		for (int i = 0; i < nums.length; i++) {
+			int key = target - nums[i];
+			if (map.containsKey(key) && map.get(key) != i) {
+				return new int[] {i, map.get(key)};
 			}
 		}
-		return answer;
+
+		return null;
     }
 }
