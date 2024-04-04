@@ -8,42 +8,63 @@
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
+import java.math.BigInteger;
+
 class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        ListNode ans = new ListNode(0);
-        ListNode curr = ans;
-        int carry = 0;
-        
-        while(l1 != null || l2 != null){
-            int sum = carry;
-            
-            if(l1 != null){
-                sum += l1.val;
-                l1 = l1.next;
-            }
-            
-            if(l2 != null){
-                sum += l2.val;
-                l2 = l2.next;
-            }
-            
-            if(sum >= 10){
-                curr.next = new ListNode(sum-10);
-                carry = 1;
-            }else{
-                curr.next = new ListNode(sum);
-                carry = 0;
-            }
-            
-            curr = curr.next;
-        }
-        
-        if(carry == 1){
-            curr.next = new ListNode(1);
-        }
-        
-        return ans.next;
-        
-    }
+		ListNode reversedL1 = reverse(l1);
+		ListNode reversedL2 = reverse(l2);
+
+		// 임의 정밀도 정수형으로 변환하여 더하기 연산 진행
+		BigInteger sum = toBigInt(reversedL1).add(toBigInt(reversedL2));
+
+		// 결과를 다시 역순으로
+		return toReversedLinkedList(sum);
+
+	}
+
+	// 연결 리스트 역순 정렬
+	public ListNode reverse(ListNode root) {
+		ListNode node = root;
+		ListNode prev = null;
+
+		while (node != null) {
+			ListNode next = node.next;
+			node.next = prev;
+
+			prev = node;
+			node = next;
+		}
+		return prev;
+	}
+
+	// 연결 리스트의 값 이어서 정수로 변환
+	public BigInteger toBigInt(ListNode node) {
+		String val = "";
+
+		while (node != null) {
+			val += node.val;
+			node = node.next;
+		}
+		return new BigInteger(val);
+	}
+
+	// 주어진 정수를 연결리스트 역순으로 처리
+	public ListNode toReversedLinkedList(BigInteger val) {
+		ListNode prev = null;
+		ListNode node = null;
+
+		// 정수형을 문자로 바꾼 다음 문자 배열로 전환하여 한 글자씩 순회
+		for (char c : String.valueOf(val).toCharArray()) {
+			// 한글자씩 숫자로 변환하여 노드 생성
+			node = new ListNode(Character.getNumericValue(c));
+			// 최종 결과는 뒤집어야 하므로 현재 노드의 다음으로 이전 노드 지전
+			node.next = prev;
+			// 이전 노드는 현재 노드 지정
+			prev = node;
+		}
+
+		return node;
+	}
 
 }
