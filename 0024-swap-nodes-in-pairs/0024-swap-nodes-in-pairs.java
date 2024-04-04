@@ -10,16 +10,22 @@
  */
 class Solution {
     public ListNode swapPairs(ListNode head) {
-		ListNode node = head;
+		// 값을 계산할 임시 노드 생성
+		ListNode root = new ListNode(0);
+		root.next = head;
+		ListNode node = root;
 
-		while (node != null && node.next != null) {
-			int temp = node.val;
-			node.val = node.next.val;
-			node.next.val = temp;
+		while (node.next != null && node.next.next != null) {
+			ListNode a = node.next;
+			ListNode b = node.next.next;
+
+			a.next = b.next;
+			node.next = b;
+			node.next.next = a;
 
 			node = node.next.next;
 		}
 
-		return head;
+		return root.next;
     }
 }
