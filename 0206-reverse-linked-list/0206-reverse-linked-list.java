@@ -10,19 +10,24 @@
  */
 class Solution {
     public ListNode reverseList(ListNode head) {
-		return reverse(head, null);
-	}
+		ListNode prev = null;
+		ListNode node = head;
 
-	public ListNode reverse(ListNode node, ListNode prev) {
-		// 현재 노드가 null 이면 return
-		if (node == null)
-			return prev;
+		// 노드 끝으로 이동 반복 순회
+		while (node != null) {
+			// 현재 노드의 다음 노드를 지정
+			ListNode next = node.next;
 
-		// 현재 노드의 다음 노드 미리 지정
-		ListNode next = node.next;
-		// 현재 노드의 다음으로 이전 노드 지정
-		node.next = prev;
+			// 현재 노드의 다음으로 이전 노드를 지정
+			node.next = prev;
 
-		return reverse(next, node);
+			// 이전 노드는 현재 노드로 지정
+			prev = node;
+
+			// 미리 지정한 다음 노드를 현재 노드로 변경
+			node = next;
+		}
+
+		return prev;
 	}
 }
