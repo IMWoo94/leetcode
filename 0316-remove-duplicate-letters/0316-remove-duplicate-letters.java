@@ -1,38 +1,43 @@
 class Solution {
     public String removeDuplicateLetters(String s) {
-		// 정렬된 문자열 집합 순회
-		for (char c : toSortedSet(s)) {
-			// 해당 문자가 포함된 위치부터 접미사로 지정
-			String suffix = s.substring(s.indexOf(c));
-			// 전체 집합과 접미사 집합이 일치하면 해당 문자 정답에 추가하고 재귀 호출 진행
-			if (toSortedSet(s).equals(toSortedSet(suffix))) {
-				return c + removeDuplicateLetters(suffix.replace(String.valueOf(c), ""));
-			}
+		// 문자의 갯수를 계산해서 담아둘 변수
+		Map<Character, Integer> counter = new HashMap<>();
+		// 처리 여부
+		Map<Character, Boolean> seen = new HashMap<>();
+		// 문제 풀이에 사용할 스택
+		Deque<Character> stack = new ArrayDeque<>();
+
+		// 문자 갯수 카운팅
+		for (char c : s.toCharArray()) {
+			counter.put(c, counter.getOrDefault(c, 0) + 1);
 		}
 
-		return "";
-    }
-    
-    private Set<Character> toSortedSet(String s) {
-		// 문자열을 문자 단위 집합으로 저장할 변수 선언
-		Set<Character> set = new TreeSet<>(new Comparator<Character>() {
-			@Override
-			public int compare(Character o1, Character o2) {
-				if (o1 == o2) {
-					return 0;
-				} else if (o1 > o2) {
-					return 1;
-				} else {
-					return -1;
-				}
-			}
-		});
+		for (char c : s.toCharArray()) {
+			// 현재 처리하는 문자는 카운터에서 -1 처리
+			counter.put(c, counter.get(c) - 1);
 
-		// 문자열을 문자 단위로 집합에 저장, 정렬된 상태로 저장된다. 저장 순서는 사전순
-		for (int i = 0; i < s.length(); i++) {
-			set.add(s.charAt(i));
+			// 이미 처리한 문자는 패스
+			if (seen.containsKey(c) && seen.get(c) == true)
+				continue;
+
+			// 스택에 존재하는 문자가 현재 문자보다 더 뒤에 붙어야 할 문자라면 스택에서 제거
+			// 처리하지 않는 것으로 표시
+			while (!stack.isEmpty() && stack.peek() > c && counter.get(stack.peek()) > 0) {
+				seen.put(stack.pop(), false);
+			}
+
+			// 현재 문자를 스택에 삽입
+			stack.push(c);
+
+			// 현재 문자 처리 표시
+			seen.put(c, true);
 		}
 
-		return set;
+		// 스택에 존재하는 문자를 큐 순서대로 추출
+		StringBuilder sb = new StringBuilder();
+		while (!stack.isEmpty()) {
+			sb.append(stack.pollLast());
+		}
+		return sb.toString();
 	}
 }
