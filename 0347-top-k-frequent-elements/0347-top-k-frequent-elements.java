@@ -8,30 +8,15 @@ class Solution {
 			frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
 		}
 
-		// 빈도 수를 기준으로 각 엘리먼트들을 담아둘 Map
-		Map<Integer, List<Integer>> buckets = new HashMap<>();
-		for (int key : frequencyMap.keySet()) {
-			int frequency = frequencyMap.get(key);
-
-			// 빈도 수에 해당하는 엘리먼트가 존재하지 않으면 빈 리스트 생성
-			List<Integer> list = buckets.getOrDefault(frequency, new ArrayList<>());
-			list.add(key);
-			buckets.put(frequency, list);
+		// 빈도 순으로 우선순위 큐
+		PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> o2[1] - o1[1]);
+		for (int elem : frequencyMap.keySet()) {
+			pq.add(new int[] {elem, frequencyMap.get(elem)});
 		}
 
-		// 결과로 리턴할 변수
 		int[] result = new int[k];
-		int index = 0;
-		// 전체 엘리먼트 수를 통해서 빈도 찾기
-		for (int i = nums.length; i >= 0 && index < k; i--) {
-			// 해당 빈도에 값이 존재하면 엘리먼트를 결과 변수에 삽입
-			if (buckets.get(i) != null) {
-				// 해당 빈도에 엘리먼트 값이 여러개 등록되어 있을 수 있다.
-				for (int elem : buckets.get(i)) {
-					result[index] = elem;
-					index++;
-				}
-			}
+		for (int i = 0; i < k; i++) {
+			result[i] = pq.poll()[0];
 		}
 
 		return result;
