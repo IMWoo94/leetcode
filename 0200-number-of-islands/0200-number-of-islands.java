@@ -5,7 +5,7 @@ class Solution {
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid[i].length; j++) {
 				if (grid[i][j] == '1') {
-					dfs(i, j, grid);
+					iterativeDFS(i, j, grid);
 					count++;
 				}
 			}
@@ -33,5 +33,25 @@ class Solution {
 		dfs(i + 1, j, grid);
 		// 북
 		dfs(i - 1, j, grid);
+	}
+    
+	public void iterativeDFS(int i, int j, char[][] grid) {
+		Deque<int[]> stack = new ArrayDeque<>();
+		stack.push(new int[] {i, j});
+
+		while (!stack.isEmpty()) {
+			int[] xy = stack.poll();
+			i = xy[0];
+			j = xy[1];
+			// 그리드 범위를 넘어가지 않고 현재 위치가 육지라면 육지로 변환
+			if (i >= 0 && j >= 0 && i < grid.length && j < grid[i].length && grid[i][j] == '1') {
+				grid[i][j] = '#';
+				// 동서남북 stack 쌓기
+				stack.push(new int[] {i, j + 1});
+				stack.push(new int[] {i, j - 1});
+				stack.push(new int[] {i + 1, j});
+				stack.push(new int[] {i - 1, j});
+			}
+		}
 	}
 }
