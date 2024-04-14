@@ -34,7 +34,7 @@ class Solution {
 				continue;
 			}
 
-			int start = current.isEmpty() ? 1 : current.get(current.size() - 1) + 1;
+			int start = current.isEmpty() ? 1 : current.getLast() + 1;
 			for (int i = start; i <= n; i++) {
 				current.add(i);
 				stack.add(new LinkedList<>(current));
