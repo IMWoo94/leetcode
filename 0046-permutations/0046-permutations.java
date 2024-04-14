@@ -3,7 +3,7 @@ class Solution {
         List<List<Integer>> answer = new ArrayList<>();
 		List<Integer> list = Arrays.stream(nums).boxed().toList();
 		// dfs(answer, new ArrayList<>(), list);
-        iterativeDFS(answer, list);
+        iterativeBFS(answer, list);
 		return answer;
     }
     
@@ -49,6 +49,29 @@ class Solution {
 						temp.add(num);
 						stack.push(temp);
 					}
+				}
+			}
+		}
+	}
+    
+	public void iterativeBFS(List<List<Integer>> results, List<Integer> elements) {
+		Queue<List<Integer>> queue = new LinkedList<>();
+
+		for (int num : elements) {
+			queue.add(Arrays.asList(num));
+		}
+
+		while (!queue.isEmpty()) {
+			List<Integer> list = queue.poll();
+			if (list.size() == elements.size()) {
+				results.add(list);
+				continue;
+			}
+			for (int e : elements) {
+				if (!list.contains(e)) {
+					List<Integer> created = new ArrayList<>(list);
+					created.add(e);
+					queue.add(created);
 				}
 			}
 		}
