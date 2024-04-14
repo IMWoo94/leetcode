@@ -2,7 +2,8 @@ class Solution {
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> answer = new ArrayList<>();
 		List<Integer> list = Arrays.stream(nums).boxed().toList();
-		dfs(answer, new ArrayList<>(), list);
+		// dfs(answer, new ArrayList<>(), list);
+        iterativeDFS(answer, list);
 		return answer;
     }
     
@@ -26,6 +27,30 @@ class Solution {
 			dfs(results, prevElements, nextElements);
 			// 재귀를 나오게 되면 현재 요소에 대해서 제외
 			prevElements.remove(e);
+		}
+	}
+    
+	public void iterativeDFS(List<List<Integer>> results, List<Integer> elements) {
+		Deque<List<Integer>> stack = new ArrayDeque<>();
+
+		for (int e : elements) {
+			stack.push(Arrays.asList(e));
+
+			while (!stack.isEmpty()) {
+				List<Integer> permute = stack.pop();
+				if (permute.size() == elements.size()) {
+					results.add(permute);
+					continue;
+				}
+
+				for (int num : elements) {
+					if (!permute.contains(num)) {
+						List<Integer> temp = new ArrayList<>(permute);
+						temp.add(num);
+						stack.push(temp);
+					}
+				}
+			}
 		}
 	}
 }
