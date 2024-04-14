@@ -2,7 +2,8 @@ class Solution {
     public List<List<Integer>> combine(int n, int k) {
 		List<List<Integer>> answer = new ArrayList<>();
 		// recursiveDFS(answer, new LinkedList<>(), n, 1, k);
-        iterativeDFS(answer, n, k);
+        // iterativeDFS(answer, n, k);
+        iterativeBFS(answer, n, k);
         return answer;
     }
     
@@ -38,6 +39,27 @@ class Solution {
 			for (int i = start; i <= n; i++) {
 				current.add(i);
 				stack.add(new LinkedList<>(current));
+				current.removeLast();
+			}
+		}
+	}
+    
+	public void iterativeBFS(List<List<Integer>> results, int n, int k) {
+		Queue<LinkedList<Integer>> q = new LinkedList<>();
+		q.add(new LinkedList<>());
+
+		while (!q.isEmpty()) {
+			LinkedList<Integer> current = q.poll();
+
+			if (current.size() == k) {
+				results.add(current.stream().collect(Collectors.toList()));
+				continue;
+			}
+
+			int start = current.isEmpty() ? 1 : current.getLast() + 1;
+			for (int i = start; i <= n; i++) {
+				current.add(i);
+				q.add(new LinkedList<>(current));
 				current.removeLast();
 			}
 		}
