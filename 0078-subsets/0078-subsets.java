@@ -3,7 +3,8 @@ class Solution {
 		List<List<Integer>> results = new ArrayList<>();
 		List<Integer> list = Arrays.stream(nums).boxed().collect(Collectors.toList());
 		// recursiveDFS(results, list, 0, new ArrayDeque<>());
-        iterativeDFS(results, list);
+        // iterativeDFS(results, list);
+        iterativeBFS(results, list);
 		return results;
     }
     
@@ -30,6 +31,25 @@ class Solution {
 			for (int i = pair.index; i < nums.size(); i++) {
 				pair.path.add(nums.get(i));
 				stack.push(new Pair(i + 1, new LinkedList<>(pair.path)));
+				pair.path.removeLast();
+			}
+		}
+	}
+    
+	public void iterativeBFS(List<List<Integer>> results, List<Integer> nums) {
+		Queue<Pair> stack = new LinkedList<>();
+
+		stack.add(new Pair(0, new LinkedList<>()));
+
+		while (!stack.isEmpty()) {
+
+			Pair pair = stack.poll();
+
+			results.add(new ArrayList<>(pair.path));
+
+			for (int i = pair.index; i < nums.size(); i++) {
+				pair.path.add(nums.get(i));
+				stack.add(new Pair(i + 1, new LinkedList<>(pair.path)));
 				pair.path.removeLast();
 			}
 		}
