@@ -8,18 +8,22 @@ class Solution {
 			fromToMap.putIfAbsent(fromTo.get(0), new PriorityQueue<>());
 			fromToMap.get(fromTo.get(0)).add(fromTo.get(1));
 		}
-		recursiveDFS(answer, fromToMap, "JFK");
+		// recursiveDFS(answer, fromToMap, "JFK");
+        iterativeDFS(answer, fromToMap, "JFK");
 		return answer;
 	}
 	
 	// DFS - 재귀
-	public void recursiveDFS(List<String> results, Map<String, PriorityQueue<String>> fromToMap, String from) {
-		while (fromToMap.containsKey(from) && !fromToMap.get(from).isEmpty()) {
-			// 사전 어휘 순으로 첫 위치부터 우선순위 큐를 이용해 추출 및 재귀 DFS 진행
-			recursiveDFS(results, fromToMap, fromToMap.get(from).poll());
+	public void iterativeDFS(List<String> results, Map<String, PriorityQueue<String>> fromToMap, String from) {
+		Deque<String> stack = new ArrayDeque<>();
+		stack.push(from);
+
+		while (!stack.isEmpty()) {
+			while (fromToMap.containsKey(stack.getFirst()) && !fromToMap.get(stack.getFirst()).isEmpty()) {
+				stack.push(fromToMap.get(stack.getFirst()).poll());
+			}
+			results.add(0, stack.pop());
 		}
-		// 재귀가 끝나면, 더 이상 이동할 수 있는 여행지가 없다는 뜻이며, 최종 도착지가 됩니다.
-		// 돌아가면 각각의 위치를 맨앞으로 넣는다면 여행경로가 완성이 된다.
-		results.add(0, from);
+
 	}
 }
